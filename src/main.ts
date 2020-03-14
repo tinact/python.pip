@@ -5,23 +5,28 @@ import * as path from 'path'
 async function run(): Promise<void> {
   try {
     const packages: string = core.getInput('packages')
-    let packagesList: string[] | undefined
-
-    if (packages) {
-      packagesList = packages.split(/\s+/)
-    } else {
-      packagesList = undefined
-    }
+    const packagesList: string[] | undefined = getPackages(packages)
+    const args = getArgs(packagesList)
 
     if (!packages) {
       throw new Error('You must specify either packages')
     }
 
-    const args = getArgs(packagesList)
-
     runPip(args)
+      .then(() =>
+        core.info(`Package ${packagesList} were successfully installed.`)
+      )
+      .catch(err => core.setFailed(err.message))
   } catch (error) {
     core.setFailed(error.message)
+  }
+}
+
+function getPackages(packages: string): string[] | undefined {
+  if (packages) {
+    return packages.split(/\s+/)
+  } else {
+    return undefined
   }
 }
 

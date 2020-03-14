@@ -977,23 +977,27 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const packages = core.getInput('packages');
-            let packagesList;
-            if (packages) {
-                packagesList = packages.split(/\s+/);
-            }
-            else {
-                packagesList = undefined;
-            }
+            const packagesList = getPackages(packages);
+            const args = getArgs(packagesList);
             if (!packages) {
                 throw new Error('You must specify either packages');
             }
-            const args = getArgs(packagesList);
-            runPip(args);
+            runPip(args)
+                .then(() => core.info(`Package ${packagesList} were successfully installed.`))
+                .catch(err => core.setFailed(err.message));
         }
         catch (error) {
             core.setFailed(error.message);
         }
     });
+}
+function getPackages(packages) {
+    if (packages) {
+        return packages.split(/\s+/);
+    }
+    else {
+        return undefined;
+    }
 }
 function getArgs(packagesList) {
     let args = ['-m', 'pip', 'install'];
