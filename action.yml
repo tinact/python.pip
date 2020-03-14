@@ -1,0 +1,14 @@
+---
+name: 'Python Pip'
+description: 'This action install pip package.'
+author: 'Simon Baerlocher <s.baerlocher@sbaerlocher.ch>'
+inputs:
+  package:
+    description: "."
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  color: blue
+  icon: check-square'
