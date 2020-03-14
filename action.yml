@@ -4,7 +4,7 @@ description: 'This action install pip package.'
 author: 'Simon Baerlocher <s.baerlocher@sbaerlocher.ch>'
 inputs:
   package:
-    description: "."
+    description: "A string of Python package to be installe."
     required: false
 runs:
   using: 'node12'
